@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var book = {
                 "isbn": isbn.value,
                 "title": title.value,
-                "author": author.valuer,
+                "author": author.value,
                 "publisher": publisher.value,
                 "type": type.value
             }

@@ -5,8 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     loadBooks()
 
-
-
     function loadBooks(id) {
         $.ajax({
             url: "http://localhost:8282/books/",
@@ -72,9 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (flag) {
-            document.querySelectorAll("input").forEach(function (el) {
-                el.value = ""
-            })
 
             var dock = document.querySelector('.clearfix')
             var successAlert = document.createElement("div")
@@ -97,12 +92,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 dataType: "json",
                 contentType: "application/json"
             }).done(function (result) {
+                document.querySelectorAll("input").forEach(function (el) {
+                    el.value = ""
+                })
+
                 appendBookEl(result.id, result.title)
-                var newBook = document.querySelector('[data-id="'+result.id+'"]')
+                var newBook = document.querySelector('[data-id="' + result.id + '"]')
+
                 newBook.addEventListener('click', function e() {
                     fillInfo(this)
                     this.removeEventListener('click', e)
                 })
+
+
             }).fail(function (xhr, status, err) {
             }).always(function (xhr, status) {
             });
@@ -140,7 +142,29 @@ document.addEventListener("DOMContentLoaded", function () {
         top.appendChild(newBook)
         newBook.classList.add("bookTitle")
         newBook.dataset.id = id
-        newBook.innerHTML = "<h3>" + title + "</h3>"
+        var title = "<h3>" + title + "</h3>"
+        var deleteButton = '<button type="button" class="btn btn-danger" id=>Delete</button>'
+        var layout = '<div class="row"><div class="col">' + title +
+            '</div><div class="col">' + deleteButton + '</div></div>'
+        newBook.innerHTML = layout
+        deleteButton = document.querySelector('[data-id="' + id + '"]').querySelector("button")
+        deleteButton.addEventListener('click', function () {
+            deleteBook(id)
+        })
+    }
+
+    function deleteBook(id) {
+        $.ajax({
+            url: "http://localhost:8282/books/" + id,
+            data: {},
+            type: "DELETE",
+            dataType: "json"
+        }).done(function (result) {
+            var toDelete = document.querySelector('[data-id="' + id + '"]')
+            toDelete.parentElement.removeChild(toDelete)
+        }).fail(function (xhr, status, err) {
+        }).always(function (xhr, status) {
+        })
     }
 
     function fillInfo(parent) {

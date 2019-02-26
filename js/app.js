@@ -176,13 +176,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }).done(function (result) {
 
             var data = []
+            for (let i = 0; i < 4; i++) {
             data.push(document.createElement('li'))
-            data.push(document.createElement('li'))
-            data.push(document.createElement('li'))
-            data.push(document.createElement('li'))
-            for (const information of data) {
-                parent.appendChild(information)
+            parent.appendChild(data[i])
             }
+
             data[0].innerText = "Isbn: " + result.isbn
             data[1].innerText = "Author: " + result.author
             data[2].innerText = "Publisher: " + result.publisher
